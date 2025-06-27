@@ -4,22 +4,33 @@
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
 #include <iostream>
+using namespace std;
 
-const char* s = "[+]";
-const char* f = "[-]";
-const char* c = "[*]";
-
-static int DeviceCheck() {
+static std::string DeviceCheck() {
 	try {
 		SoapySDR::KwargsList result = SoapySDR::Device::enumerate();
 
-		if (result.empty());
-		std::cout << "No devices found";
-		return EXIT_FAILURE;
+		if (result.empty()) {
+			std::cout << "No devices found";
+			return "";
+		} else {
+			std::cout << "Devices found!" << std::endl;
+			for (auto device = result.begin(); device != result.end(); ++device) {
+				std::cout << (*device)["driver"] << std::endl;
+				string driver_driver = (*device)["driver"];
+				string driver_serial = (*device)["serial"];
+				string formatted_driver = "driver=" + driver_driver + ",serial=" + driver_serial;
+				return formatted_driver;
+			}
+			return "";
+		}
 	}
-	catch (int e) {
-		std::cout << "Exception Caught: " << e;
+	catch (std::exception& e) {
+		std::cout << "Exception Caught: " << e.what() << std::endl;
+		return "";
 	}
+	std::cout << std::endl;
+	return "";
 }
 
 static int MakeDevice(const std::string& argStr)
@@ -30,7 +41,7 @@ static int MakeDevice(const std::string& argStr)
 		auto device = SoapySDR::Device::make(argStr);
 		std::cout << "Driver= " << device->getDriverKey() << std::endl;
 		std::cout << "Hardware= " << device->getHardwareKey() << std::endl;
-		for (const auto &it : device->getHardwareInfo())
+		for (const auto& it : device->getHardwareInfo())
 		{
 			std::cout << "  " << it.first << "=" << it.second << std::endl;
 		}
@@ -48,8 +59,9 @@ static int MakeDevice(const std::string& argStr)
 
 int main() {
 
-	DeviceCheck();
-	MakeDevice();
+	std::string args = DeviceCheck();
+	if (args.empty()) return EXIT_FAILURE;
+	return MakeDevice(args);
 
 	return EXIT_SUCCESS;
 }
