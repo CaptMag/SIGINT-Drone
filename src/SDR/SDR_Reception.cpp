@@ -16,11 +16,23 @@ static std::string DeviceCheck() {
 		} else {
 			std::cout << "Devices found!" << std::endl;
 			for (auto device = result.begin(); device != result.end(); ++device) {
-				std::cout << (*device)["driver"] << std::endl;
-				string driver_driver = (*device)["driver"];
-				string driver_serial = (*device)["serial"];
-				string formatted_driver = "driver=" + driver_driver + ",serial=" + driver_serial;
-				return formatted_driver;
+				std::cout << (*device)["driver"] << (*device)["serial"] << std::endl;
+				try {
+					string driver_driver = device->at("driver");
+					string driver_serial = device->at("serial");
+					string formatted_driver = "driver=" + driver_driver + ",serial=" + driver_serial;
+					if (device == result.end()) {
+						return formatted_driver;
+					}
+ 				}
+				catch (const std::out_of_range& e) {
+					std::cout << "Excpetion Caught " << e.what() << endl;
+					string device_driver = device->at("driver");
+					string formatted_driver = "driver=" + device_driver;
+					if (device == result.end()) {
+						return formatted_driver;
+					}
+				}
 			}
 			return "";
 		}
