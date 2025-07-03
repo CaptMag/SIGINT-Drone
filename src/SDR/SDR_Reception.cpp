@@ -6,74 +6,72 @@
 #include <iostream>
 using namespace std;
 
-static std::string DeviceCheck() {
-	try {
-		SoapySDR::KwargsList result = SoapySDR::Device::enumerate();
+#define okay(msg, ...) printf("[+] " msg "\n", ##__VA_ARGS__)
+#define warn(msg, ...) printf("[-] " msg "\n", ##__VA_ARGS__)
+#define info(msg, ...) printf("[i] " msg "\n", ##__VA_ARGS__)
 
-		if (result.empty()) {
-			std::cout << "No devices found";
-			return "";
-		} else {
-			std::cout << "Devices found!" << std::endl;
-			for (auto device = result.begin(); device != result.end(); ++device) {
-				std::cout << (*device)["driver"] << (*device)["serial"] << std::endl;
+int main() {
+	
+	try {
+		SoapySDR::KwargsList enumerate = SoapySDR::Device::enumerate();
+
+		if (enumerate.empty()) {
+			warn("Could not find any devices!");
+			return EXIT_FAILURE;
+		}
+
+		okay("Devices found! Creating formatted drivers....");
+		vector<string> SDR_MakeDevices;
+		for (auto SDR = enumerate.begin(); SDR != enumerate.end(); ++SDR) {
+			//info("Device Information: %s", SDR->at("driver"));
+			printf("---/*Checking Device Compatability...*/---\n");
+			string SDR_driver;
+			string SDR_serial;
+			string SDR_MakeDevice;
+			printf("[*] Total formatted device strings: %zu\n", SDR_MakeDevices.size());
+			try {
+				SDR_serial = SDR->at("serial");
+				SDR_driver = SDR->at("driver");
+				SDR_MakeDevice = "device=" + SDR_driver + ",serial=" + SDR_serial;
+				SDR_MakeDevices.push_back(SDR_MakeDevice);
+				string SDR_label = SDR->at("label");
+				string SDR_part_id = SDR->at("part_id");
+				string SDR_version = SDR->at("version");
+
+				string SDR_complete = SDR_driver + " " + SDR_serial + " " + SDR_label + " " + SDR_part_id + " " + SDR_version;
+				okay("Complete information for all devices: %s", SDR_complete.c_str());
+
+			}
+			catch (const std::out_of_range& e) {
+				warn("Exception caught: %s", e.what());
+				continue;
+			}
+			for (const auto& SDR_MakeDevice : SDR_MakeDevices) {
 				try {
-					string driver_driver = device->at("driver");
-					string driver_serial = device->at("serial");
-					string formatted_driver = "driver=" + driver_driver + ",serial=" + driver_serial;
-					if (device == result.end()) {
-						return formatted_driver;
+					info("Make Device: %s", SDR_MakeDevice.c_str());
+					auto device = SoapySDR::Device::make(SDR_MakeDevice);
+					if (!device) {
+						warn("Could not create device for %s", SDR_MakeDevice.c_str());
+						continue;
 					}
- 				}
-				catch (const std::out_of_range& e) {
-					std::cout << "Excpetion Caught " << e.what() << endl;
-					string device_driver = device->at("driver");
-					string formatted_driver = "driver=" + device_driver;
-					if (device == result.end()) {
-						return formatted_driver;
+					info("Driver= %s", device->getDriverKey().c_str());
+					info("Hardware= %s", device->getHardwareKey().c_str());
+					for (const auto& it : device->getHardwareInfo()) {
+						std::cout << " " << it.first << "=" << it.second << std::endl;
 					}
+					SoapySDR::Device::unmake(device);
+				}
+				catch (const std::exception& ex) {
+					warn("Error making device: %s", ex.what());
+					continue;
 				}
 			}
-			return "";
 		}
 	}
 	catch (std::exception& e) {
-		std::cout << "Exception Caught: " << e.what() << std::endl;
-		return "";
-	}
-	std::cout << std::endl;
-	return "";
-}
-
-static int MakeDevice(const std::string& argStr)
-{
-	std::cout << "Make Device " << argStr << std::endl;
-	try
-	{
-		auto device = SoapySDR::Device::make(argStr);
-		std::cout << "Driver= " << device->getDriverKey() << std::endl;
-		std::cout << "Hardware= " << device->getHardwareKey() << std::endl;
-		for (const auto& it : device->getHardwareInfo())
-		{
-			std::cout << "  " << it.first << "=" << it.second << std::endl;
-		}
-		SoapySDR::Device::unmake(device);
-	}
-	catch (const std::exception& ex)
-	{
-		std::cerr << "Error making device: " << ex.what() << std::endl;
+		warn("Exception caught: %s", e.what());
 		return EXIT_FAILURE;
 	}
-	std::cout << std::endl;
-	return EXIT_SUCCESS;
-}
-
-
-int main() {
-
-	std::string args = DeviceCheck();
-	if (args.empty()) return EXIT_FAILURE;
-	return MakeDevice(args);
 
 	return EXIT_SUCCESS;
 }
