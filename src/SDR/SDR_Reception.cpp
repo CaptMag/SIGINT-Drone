@@ -28,12 +28,12 @@ int main() {
 			string SDR_driver;
 			string SDR_serial;
 			string SDR_MakeDevice;
-			printf("[*] Total formatted device strings: %zu\n", SDR_MakeDevices.size());
 			try {
 				SDR_serial = SDR->at("serial");
 				SDR_driver = SDR->at("driver");
-				SDR_MakeDevice = "device=" + SDR_driver + ",serial=" + SDR_serial;
+				SDR_MakeDevice = "driver=" + SDR_driver + ",serial=" + SDR_serial;
 				SDR_MakeDevices.push_back(SDR_MakeDevice);
+				printf("[*] Total formatted device strings: %zu\n", SDR_MakeDevices.size());
 				string SDR_label = SDR->at("label");
 				string SDR_part_id = SDR->at("part_id");
 				string SDR_version = SDR->at("version");
