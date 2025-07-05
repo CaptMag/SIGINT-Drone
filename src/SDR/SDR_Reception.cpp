@@ -10,7 +10,7 @@ using namespace std;
 #define warn(msg, ...) printf("[-] " msg "\n", ##__VA_ARGS__)
 #define info(msg, ...) printf("[i] " msg "\n", ##__VA_ARGS__)
 
-int main() {
+int enumeration() {
 	
 	try {
 		SoapySDR::KwargsList enumerate = SoapySDR::Device::enumerate();
@@ -73,5 +73,24 @@ int main() {
 		return EXIT_FAILURE;
 	}
 
+	return EXIT_SUCCESS;
+}
+
+std::string channelSensorReadings(SoapySDR::Device *device, const int dir, const size_t chan) {
+	std::vector<std::string> sensors = device->listSensors(dir, chan);
+
+	for (size_t i = 0; i < sensors.size(); i++) {
+		std::string key = sensors[i];
+		SoapySDR::ArgInfo info = device->getSensorInfo(dir, chan, key);
+		std::string reading = device->readSensor(dir, chan, key);
+
+		info("Reading sensor information: %s", sensors[i]);
+		if (not info.name.empty()) info(" (%s}", info.name);
+		if (info.range.maximum() > std::numeric_limits<double>::min()) okay("InfoRange= %s", );
+	}
+}
+
+int main() {
+	enumeration();
 	return EXIT_SUCCESS;
 }
