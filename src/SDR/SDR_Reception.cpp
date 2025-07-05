@@ -20,6 +20,8 @@ int enumeration() {
 			return EXIT_FAILURE;
 		}
 
+		/*---[Grab Metadata from available SDRs]---*/
+
 		okay("Devices found! Creating formatted drivers....");
 		vector<string> SDR_MakeDevices;
 		for (auto SDR = enumerate.begin(); SDR != enumerate.end(); ++SDR) {
@@ -46,6 +48,9 @@ int enumeration() {
 				warn("Exception caught: %s", e.what());
 				continue;
 			}
+
+			/*---[Create device for SDR probbing]---*/
+
 			for (const auto& SDR_MakeDevice : SDR_MakeDevices) {
 				try {
 					info("Make Device: %s", SDR_MakeDevice.c_str());
@@ -65,6 +70,7 @@ int enumeration() {
 					warn("Error making device: %s", ex.what());
 					continue;
 				}
+
 			}
 		}
 	}
@@ -76,21 +82,13 @@ int enumeration() {
 	return EXIT_SUCCESS;
 }
 
-std::string channelSensorReadings(SoapySDR::Device *device, const int dir, const size_t chan) {
-	std::vector<std::string> sensors = device->listSensors(dir, chan);
-
-	for (size_t i = 0; i < sensors.size(); i++) {
-		std::string key = sensors[i];
-		SoapySDR::ArgInfo info = device->getSensorInfo(dir, chan, key);
-		std::string reading = device->readSensor(dir, chan, key);
-
-		info("Reading sensor information: %s", sensors[i]);
-		if (not info.name.empty()) info(" (%s}", info.name);
-		if (info.range.maximum() > std::numeric_limits<double>::min()) okay("InfoRange= %s", );
-	}
+std::string capturing(const int dir, const size_t chan)
+{
+	return std::string();
 }
 
 int main() {
 	enumeration();
+	capturing(SOAPY_SDR_RX, 0);
 	return EXIT_SUCCESS;
 }
