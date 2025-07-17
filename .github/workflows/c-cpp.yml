@@ -1,23 +1,28 @@
 name: C/C++ CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
 
 jobs:
-  build:
+    build:
+        runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "14"
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run tests
+              run: npm test
