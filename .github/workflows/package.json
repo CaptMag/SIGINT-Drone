@@ -1,0 +1,12 @@
+"repository": {
+    "type": "git",
+    "url": "https://github.com/CaptMag/SIGINT-Drone.git"
+},
+
+- name: Install dependencies
+  run: npm install
+  working-directory: ./frontend
+
+- name: Run tests
+  run: npm test
+  working-directory: ./frontend
