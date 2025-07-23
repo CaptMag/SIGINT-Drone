@@ -4,6 +4,12 @@
 This will be a Glider styled drone which will carry a Raspberry Pi 4 alongside a HackRF to capture unencrypted data in the air.  
 The glider will be built using OpenVSP alongside XFOIL and use a symmetrical airfoil, specifically the MH60-il.  
 
+## Dependencies
+
+Must have [SoapySDR Installed](https://github.com/pothosware/SoapySDR) either through CMake or directly downloading it [here](https://downloads.myriadrf.org/builds/PothosSDR/)  
+When compiling in Visual Studio, it must be ran on a x64 architechture on release mode, debugging mode will not work.  
+Must have needed DLLs installed including HackRF.dll and SoapySDR.dll.
+
 ## Planning
 
 Ongoing documentation is currently being created to explain the workings of this project.  
