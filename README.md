@@ -10,6 +10,10 @@ Must have [SoapySDR Installed](https://github.com/pothosware/SoapySDR) either th
 When compiling in Visual Studio, it must be ran on a x64 architechture on release mode, debugging mode will not work.  
 Must have needed DLLs installed including HackRF.dll and SoapySDR.dll.
 
+Include Directories: C:\Program Files\PothosSDR\include to C/C++ Additional Include Directories  
+Library Directories: C:\Program Files\PothosSDR\lib to Linker Additional Library Directories  
+Additional Dependecies: SoapySDR.lib to Linker Additional Dependencies
+
 ## Planning
 
 Ongoing documentation is currently being created to explain the workings of this project.  
@@ -22,6 +26,6 @@ The packet sniffer will print all available networks alongside their BSSID, MAC 
 The SDR creation is designed to print all available devices, and create a fully formatted SDR that is ready for data capturing.
 
 Currently the project is working towards setting up the proper frequency rates, signal strength and directions.  
-This will be the last step for enumeration, and after will allow for the ability to capture and parse data.
-
-GPS location tracking will be worked on next and will be written in C.
+More functions will be implemented to allow the user to customize their SDR preferences, before ensuring the SDR is ready for capturing.  
+This will be the last step for enumeration, and after will allow for the ability to capture and parse data.  
+Pothosware SDR GUI tools will be used for proper data capturing.  
