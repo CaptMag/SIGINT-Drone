@@ -81,7 +81,6 @@ int GUI(SoapySDR::Device* device, SoapySDR::Stream* stream)
 
 	std::vector<std::complex<float>> buff(1024);
 	void* buffs[] = { buff.data() };
-	static float x[1024], y[1024];
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -101,12 +100,14 @@ int GUI(SoapySDR::Device* device, SoapySDR::Stream* stream)
 
 			if (read_stream > 0)
 			{
-				for (size_t i = 0; i < read_stream; i++)
-				{
-					x[i] = buff[i].real();
-					y[i] = buff[i].imag();
+				static float t[1024], i_data[1024], q_data[1024];
+				for (size_t i = 0; i < read_stream; i++) {
+					t[i] = static_cast<float>(i);
+					i_data[i] = buff[i].real();
+					q_data[i] = buff[i].imag();
 				}
-				ImPlot::PlotLine("I/Q", x, y, read_stream);
+				ImPlot::PlotLine("I", t, i_data, read_stream);
+				ImPlot::PlotLine("Q", t, q_data, read_stream);
 			}
 			else {
 				ImGui::Text("Wating for samples....");

@@ -16,9 +16,8 @@ int main() {
 
 	_putenv("SOAPY_SDR_PLUGIN_PATH=C:\\Program Files\\PothosSDR\\lib\\SoapySDR\\modules0.8");
 
-	std::vector<std::string> fmt = Formatting();
 	SoapySDR::Device* dev = MakeDev();
-	int enum_result = enumeration();
+	int enum_result = enumeration(dev);
 	std::vector<std::string> sensors = ListSensors(dev, SOAPY_SDR_RX, 1);
 	std::vector<std::string> Completed_Information = Range_and_Tuning(dev, SOAPY_SDR_RX, 0);
 	SoapySDR::Stream* stream = StreamSetup(dev, SOAPY_SDR_RX, "CF32", { 0 }, {}, 0, 0, 0);

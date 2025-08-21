@@ -6,7 +6,7 @@
 
 std::vector<std::string> Formatting();
 SoapySDR::Device* MakeDev();
-int enumeration();
+int enumeration(SoapySDR::Device *device);
 std::vector<std::string> ListSensors(SoapySDR::Device* device, const int dir, const size_t chan);
 std::vector<std::string> Range_and_Tuning(SoapySDR::Device* device, const int dir, const size_t chan);
 SoapySDR::Stream* StreamSetup(SoapySDR::Device* device,
