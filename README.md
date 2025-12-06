@@ -16,20 +16,26 @@ Must have needed DLLs installed including your venders specific DLL (HackRF.dll 
 
 ImGui, GLFW, SoapySDR and ImPlot are both necessary for this project including their designated paths:
 
-C++ Additional Include Directories:  
+C++ Additional Include Directories: 
+```
  C:\Program Files\PothosSDR\include  
 C:\ImGui-folder-path\Imgui\backends  
 C:\ImGui-folder-path\Imgui  
 C:\ImGui-folder-path\ImPlot  
 C:\GLFW-Download-Path\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\include
+```
 
-Linker Additional Library Directories:  
+Linker Additional Library Directories: 
+```
 C:\GLFW-Download-Path\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\lib-vc2022  
 C:\Program Files\PothosSDR\lib
+```
 
-Linker Additional Dependencies  
+Linker Additional Dependencies:  
+```
 glfw3.lib  
 SoapySDR.lib
+```
 
 ## Planning
 
