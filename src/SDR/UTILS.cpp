@@ -20,6 +20,9 @@ std::vector<std::string> Formatting()
 		string SDR_MakeDevice;
 		try {
 
+			SDR_driver = SDR->at("driver");
+			SDR_serial = SDR->at("serial");
+
 			SDR_MakeDevice = "driver=" + SDR_driver + ",serial=" + SDR_serial;
 			SDR_MakeDevices.push_back(SDR_MakeDevice);
 			info("Total formatted device strings: %zu\n", SDR_MakeDevices.size());
