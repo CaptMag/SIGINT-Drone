@@ -18,7 +18,7 @@ ImGui, GLFW, SoapySDR and ImPlot are both necessary for this project including t
 
 C++ Additional Include Directories: 
 ```
- C:\Program Files\PothosSDR\include  
+C:\Program Files\PothosSDR\include  
 C:\ImGui-folder-path\Imgui\backends  
 C:\ImGui-folder-path\Imgui  
 C:\ImGui-folder-path\ImPlot  
