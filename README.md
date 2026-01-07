@@ -36,19 +36,3 @@ Linker Additional Dependencies:
 glfw3.lib  
 SoapySDR.lib
 ```
-
-## Planning
-
-Ongoing documentation is currently being created to explain the workings of this project.  
-There will be multiple programs designed to capture signals, 802.11 frames and more features such as bluetooth monotoring, Encryption Protcol Detection, etc.
-
-## Ongoing Work
-
-As of right now, the 802.11 packet sniffer has been completed, alongside the intial SDR creation.  
-The packet sniffer will print all available networks alongside their BSSID, MAC address and beacon, probe response and request packets.  
-The SDR creation is designed to print all available devices, and create a fully formatted SDR that is ready for data capturing.
-
-Currently the project is working towards setting up the proper frequency rates, signal strength and directions.  
-More functions will be implemented to allow the user to customize their SDR preferences, before ensuring the SDR is ready for capturing.  
-This will be the last step for enumeration, and after will allow for the ability to capture and parse data.  
-Pothosware SDR GUI tools will be used for proper data capturing.  
